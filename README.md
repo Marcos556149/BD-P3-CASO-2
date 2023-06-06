@@ -5,7 +5,7 @@
 4*) σ Ch ≥ 40 ∧ Ch ≤ 45 CURSO
 5*) π nombre_curso ← Nom, Tema (CURSO ⨝ TEMAS)
 6*) π Correo,Nom (PERS ⨝ π Correo DICTA)
-7*)
+7*) SE PUSO A INSC POR EL MOTIVO DEL CURSO SQL*) (π Tema,Nom TEMAS) ÷ (π Nom (INSC ⨝ CURSO))
 8*) A= ρ nomC ← Nom DICTA
     A ⨝ PERS
 9*) PERS ⨝ (π Correo σ Nom='Python I' DICTA)
@@ -26,4 +26,15 @@
      C= ρ CO ← Correo, NO ← Nom B
      D= C ⨯ B
      PERS ⨝ (π Correo σ CO = Correo ∧ NO ≠ Nom D)
+21*) A= π CO,NO ρ CO ← Correo,NO ← Nom INSC
+     B= (π Correo, Nom INSC) ⨯ A
+     π Correo,CO σ Correo ≠ CO ∧ Nom = NO B
+22*) A= π CO,NO ρ CO ← Correo,NO ← Nom INSC
+     B= (π Correo, Nom INSC) ⨯ A
+     C= π Correo,CO σ Correo ≠ CO ∧ Nom = NO B
+     D= ρ CorreoP1 ← Correo,NomUP1 ← NomU,NomP1 ← Nom (PERS ⨝ C)
+     ρ CorreoP2 ← Correo,NomUP2 ← NomU,NomP2 ← Nom (PERS ⨝ (ρ Correo ← CO D))
+23*) A= π CO,NO,CODO ρ CO ← Correo,NO ← Nom,CODO ← Correod INSC
+     B= (π Correo, Nom, Correod INSC) ⨯ A
+     π Correo,CO σ Correo ≠ CO ∧ Nom = NO ∧ Correod ≠ CODO B    
      
